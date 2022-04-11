@@ -1,8 +1,11 @@
 import { Component } from 'react';
+import { nanoid } from 'nanoid';
+
 import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
-import { nanoid } from 'nanoid';
 import { ContactList } from './ContactList/ContactList';
+import { Notification } from './Notification/Notification';
+import { Container, MainTitle, SubTitle } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -16,13 +19,13 @@ export class App extends Component {
   };
 
   addContact = (name, number) => {
+    const { contacts } = this.state;
+
     const contact = {
       id: nanoid(),
       name,
       number,
     };
-
-    const { contacts } = this.state;
 
     for (const { name } of contacts) {
       if (name === contact.name) {
@@ -60,18 +63,27 @@ export class App extends Component {
   };
 
   render() {
-    const { filter } = this.state;
+    const { contacts, filter } = this.state;
     const { addContact, deleteContact, filterContacts, changeFilter } = this;
     const visibleContacts = filterContacts();
     return (
-      <>
-        <h1>Phonebook</h1>
+      <Container>
+        <MainTitle>Phonebook</MainTitle>
         <ContactForm addContact={addContact} />
 
-        <h2>Contacts</h2>
-        <Filter filter={filter} changeFilter={changeFilter} />
-        <ContactList contacts={visibleContacts} deleteContact={deleteContact} />
-      </>
+        <SubTitle>Contacts</SubTitle>
+        {contacts.length > 1 && (
+          <Filter filter={filter} changeFilter={changeFilter} />
+        )}
+        {contacts.length ? (
+          <ContactList
+            contacts={visibleContacts}
+            deleteContact={deleteContact}
+          />
+        ) : (
+          <Notification message="List is empty" />
+        )}
+      </Container>
     );
   }
 }

@@ -1,18 +1,37 @@
+import PropTypes from 'prop-types';
+import {
+  Button,
+  ContactItemText,
+  ContactListContainer,
+  ContactListItem,
+} from './ContactList.styled';
+
 export const ContactList = ({ contacts, deleteContact }) => {
   return (
-    <ul>
+    <ContactListContainer>
       {contacts.map(({ id, name, number }) => {
         return (
-          <li key={id}>
-            <p>
+          <ContactListItem key={id}>
+            <ContactItemText>
               {name}: {number}
-            </p>
-            <button type="button" onClick={() => deleteContact(id)}>
+            </ContactItemText>
+            <Button type="button" onClick={() => deleteContact(id)}>
               Delete
-            </button>
-          </li>
+            </Button>
+          </ContactListItem>
         );
       })}
-    </ul>
+    </ContactListContainer>
   );
+};
+
+ContactList.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
+  deleteContact: PropTypes.func.isRequired,
 };
