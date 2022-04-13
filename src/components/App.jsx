@@ -27,11 +27,12 @@ export class App extends Component {
       number,
     };
 
-    for (const { name } of contacts) {
-      if (name === contact.name) {
+    contacts.map(contactItem => {
+      if (contactItem.name === contact.name) {
         return alert(`${contact.name} is already in contacts`);
       }
-    }
+      return contactItem;
+    });
 
     this.setState(({ contacts }) => {
       return {
